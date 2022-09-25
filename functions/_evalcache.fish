@@ -1,6 +1,10 @@
 function _evalcache
+  if test (count $argv) -eq 0
+    return
+  end
+
   if test -z "$FISH_EVALCACHE_DIR"
-    export FISH_EVALCACHE_DIR="$HOME/.fish-evalcache"
+    set -gx FISH_EVALCACHE_DIR "$HOME/.fish-evalcache"
   end
 
   set -f cmdHash "noHash"
