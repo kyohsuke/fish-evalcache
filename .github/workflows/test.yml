@@ -1,0 +1,22 @@
+name: Test
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Fish
+        run: |
+          sudo apt-add-repository -yu ppa:fish-shell/release-3
+          sudo apt-get install -y fish
+
+      - name: Install Tools
+        shell: fish {0}
+        run: |
+          curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
+          fisher install $GITHUB_WORKSPACE jorgebucaran/fishtape
+
+      - name: Run tests
+        shell: fish {0}
+        run: fishtape tests/*.fish
