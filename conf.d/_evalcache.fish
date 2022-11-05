@@ -16,7 +16,7 @@ function _evalcache
   end
 
   set -f cmd (basename $argv[1])
-  set -f cacheFile "$FISH_EVALCACHE_DIR/init-$cmd-$cmdHash.sh"
+  set -f cacheFile "$FISH_EVALCACHE_DIR/init-$cmd-$cmdHash.fish"
 
   if test "$FISH_EVALCACHE_DISABLE" = "true"
     eval ($argv | source)

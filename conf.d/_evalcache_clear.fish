@@ -3,5 +3,5 @@ function _evalcache_clear
     set -gx FISH_EVALCACHE_DIR "$HOME/.fish-evalcache"
   end
 
-  rm -i "$FISH_EVALCACHE_DIR"/init-*.sh
+  rm -i "$FISH_EVALCACHE_DIR"/init-*.fish
 end
