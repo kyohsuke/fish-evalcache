@@ -1,4 +1,6 @@
 # fish-evalcache
+[![Test](https://github.com/kyohsuke/fish-evalcache/actions/workflows/test.yml/badge.svg)](https://github.com/kyohsuke/fish-evalcache/actions/workflows/test.yml)
+
 > fish plugin to cache the output of a binary initialization command, intended to help lower shell startup time.
 
 ## Install
