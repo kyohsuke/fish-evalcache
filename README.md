@@ -4,18 +4,18 @@
 > fish plugin to cache the output of a binary initialization command, intended to help lower shell startup time.
 
 ## Install
-```sh
+```fish
 fisher install kyohsuke/fish-evalcache
 ```
 
 ## Usage
-```sh
-source (anyenv init -|psub)
+```fish
+source (anyenv init - fish | psub)
 ```
 
 ↓
 
-```sh
+```fish
 _evalcache anyenv init - fish
 ```
 
