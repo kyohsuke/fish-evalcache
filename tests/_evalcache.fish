@@ -3,8 +3,8 @@
 set temp (mktemp -d)
 cd $temp
 
-echo '#/usr/bin/env bash' > testeval
-echo 'echo "echo testeval"' >> testeval
+echo '#/usr/bin/env bash' >testeval
+echo 'echo "echo testeval"' >>testeval
 chmod +x testeval
 
 set resultMD5 (echo -n "./testeval" | md5sum | cut -d' ' -f1)
