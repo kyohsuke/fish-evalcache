@@ -3,5 +3,10 @@ function _evalcache_clear
         set -gx FISH_EVALCACHE_DIR "$HOME/.fish-evalcache"
     end
 
-    rm -i "$FISH_EVALCACHE_DIR"/init-*.fish
+    if test (count $argv) -eq 0
+        rm -i "$FISH_EVALCACHE_DIR"/init-*.fish
+    else
+        set -f cmd (basename $argv[1])
+        rm -i "$FISH_EVALCACHE_DIR/init-$cmd"-*.fish
+    end
 end
