@@ -26,6 +26,13 @@ function _evalcache
         if type "$argv[1]" >/dev/null
             echo "$argv[1] initialization not cached, caching output of: $argv" 1>&2
             mkdir -p "$FISH_EVALCACHE_DIR"
+
+            for fName in "$FISH_EVALCACHE_DIR/init-$cmd-"*".fish"
+                set -l baseName (basename $fName)
+                echo "[INFO] Different arguments cache found, deleting: $baseName"
+                rm -f "$fName"
+            end
+
             $argv >"$cacheFile"
             source "$cacheFile"
         else
