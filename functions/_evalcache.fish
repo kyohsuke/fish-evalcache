@@ -31,7 +31,7 @@ function _evalcache_hash
     if test "$_EVALCACHE_HASH_CMD" = "od"
         # Fallback: produce a deterministic hex identifier from the string.
         # Join all args into one string, then get hex bytes via od.
-        printf "%s" (string join " " $argv) | od -An -tx1 | tr -d ' \n'
+        printf "%s" (string join " " $argv) | od -An -v -tx1 | tr -d ' \n'
     else
         # Use the pre-detected hash command (md5sum, sha256sum, or md5)
         printf "%s" (string join " " $argv) | $_EVALCACHE_HASH_CMD | cut -d' ' -f1
