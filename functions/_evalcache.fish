@@ -68,7 +68,8 @@ function _evalcache
 
             # FIX: Write to temp file first, then rename atomically
             # to prevent reading partial content if another shell accesses it
-            set -f tempFile "$FISH_EVALCACHE_DIR/.tmp-init-$cmd-$cmdHash.fish"
+            set -f tempFile (mktemp "$FISH_EVALCACHE_DIR/.tmp-init-XXXXXXXXXX")
+            test -n "$tempFile"; or return 1
             $argv >"$tempFile"
             mv -f "$tempFile" "$cacheFile"
             source "$cacheFile"
