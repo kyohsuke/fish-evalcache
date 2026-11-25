@@ -48,33 +48,42 @@ function _evalcache
         set -gx FISH_EVALCACHE_DIR "$HOME/.fish-evalcache"
     end
 
+    # Get the cache file name
     set -f cmd (basename $argv[1])
     set -f cmdHash (_evalcache_hash $argv)
     set -f cacheFile "$FISH_EVALCACHE_DIR/init-$cmd-$cmdHash.fish"
 
     if test "$FISH_EVALCACHE_DISABLE" = true
-        eval ($argv | source)
-    else if test -s "$cacheFile"
+        echo "$argv[1] initialization not cached, skipping" 1>&2
+        return 0
+    end
+
+    # Check if cache exists and is valid
+    if test -f "$cacheFile"
         source "$cacheFile"
     else
-        if type "$argv[1]" >/dev/null
-            echo "$argv[1] initialization not cached, caching output of: $argv" 1>&2
-            mkdir -p "$FISH_EVALCACHE_DIR"
+        echo "$argv[1] initialization not cached, caching output of: $argv" 1>&2
+        mkdir -p "$FISH_EVALCACHE_DIR"
 
-            # Optimization: remove unnecessary basename call per iteration
-            for fName in "$FISH_EVALCACHE_DIR/init-$cmd-"*".fish"
-                rm -f "$fName"
-            end
-
-            # FIX: Write to temp file first, then rename atomically
-            # to prevent reading partial content if another shell accesses it
-            set -f tempFile (mktemp "$FISH_EVALCACHE_DIR/.tmp-init-XXXXXXXXXX")
-            test -n "$tempFile"; or return 1
-            $argv >"$tempFile"
-            mv -f "$tempFile" "$cacheFile"
-            source "$cacheFile"
-        else
-            echo "evalcache ERROR: $cmd is not installed or in PATH"
+        # Optimization: remove unnecessary basename call per iteration
+        for fName in "$FISH_EVALCACHE_DIR/init-$cmd-"*".fish"
+            rm -f "$fName"
         end
+
+        # FIX: Write to temp file first, then rename atomically
+        # to prevent reading partial content if another shell accesses it
+        set -f tempFile (mktemp "$FISH_EVALCACHE_DIR/.tmp-init-XXXXXXXXXX")
+        if test -z "$tempFile"
+            echo "evalcache ERROR: Failed to create temporary file" 1>&2
+            return 1
+        end
+        $argv >"$tempFile"
+        if test $? -ne 0
+            echo "evalcache ERROR: Failed to execute command: $argv" 1>&2
+            rm -f "$tempFile"
+            return 1
+        end
+        mv -f "$tempFile" "$cacheFile"
+        source "$cacheFile"
     end
 end

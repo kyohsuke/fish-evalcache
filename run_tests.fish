@@ -39,4 +39,3 @@ echo "=== Results: $_pass passed, $_fail failed (out of $_total) ==="
 if test $_fail -gt 0
     exit 1
 end
-
