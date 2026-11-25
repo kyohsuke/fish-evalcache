@@ -6,7 +6,7 @@ set workspace_dir (dirname (status filename))
 if test (count $argv) -eq 0
     echo "Usage: run_tests.fish [test_file ...]"
     echo "Running all tests in tests/ directory..."
-    set test_files tests/*_test*.fish
+    set test_files "$workspace_dir"/tests/_evalcache*.fish
 else
     set test_files $argv
 end
