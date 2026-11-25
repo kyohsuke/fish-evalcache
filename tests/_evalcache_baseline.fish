@@ -101,5 +101,8 @@ rm -rf "$temp"
 # Report
 echo ""
 echo "=== Results: $_test_pass passed, $_test_fail failed ==="
+if functions -q @test
+    @test "baseline checks pass" "$_test_fail" -eq 0
+end
 exit $_test_fail
 
