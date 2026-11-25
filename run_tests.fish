@@ -1,6 +1,6 @@
 #!/usr/bin/fish
 # Test runner that sources our functions and runs test scripts
-set workspace_dir (dirname (dirname (status filename)))
+set workspace_dir (dirname (status filename))
 
 # --- Argument parsing ---
 if test (count $argv) -eq 0
