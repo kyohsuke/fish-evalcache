@@ -2,6 +2,7 @@
 # Tests the fallback behavior when external hash commands are unavailable.
 # The fix uses 'od' (hex dump) as a fallback hash computation method.
 
+source (dirname (status filename))/../functions/_evalcache.fish
 set temp (mktemp -d)
 cd "$temp"
 set -lx FISH_EVALCACHE_DIR "$temp"
