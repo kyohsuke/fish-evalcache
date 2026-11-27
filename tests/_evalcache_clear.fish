@@ -5,7 +5,7 @@ cd "$temp"
 
 set -lx FISH_EVALCACHE_DIR "$temp"
 
-set resultMD5 (echo -n "./testeval" | md5sum | cut -d' ' -f1)
+set resultMD5 (_evalcache_cmdhash ./testeval)
 set testFile "$FISH_EVALCACHE_DIR/init-testeval-$resultMD5.fish"
 
 echo testtesttest >"$testFile"
@@ -18,11 +18,11 @@ echo testtesttest >"$testFile"
 
 @echo === _evalcache_clear $testFile ===
 
-set resultMD5 (echo -n "./testeval" | md5sum | cut -d' ' -f1)
+set resultMD5 (_evalcache_cmdhash ./testeval)
 set testFile "$FISH_EVALCACHE_DIR/init-testeval-$resultMD5.fish"
 echo testtesttest >"$testFile"
 
-set resultMD5_2 (echo -n "./testeval2" | md5sum | cut -d' ' -f1)
+set resultMD5_2 (_evalcache_cmdhash ./testeval2)
 set testFile2 "$FISH_EVALCACHE_DIR/init-testeval2-$resultMD5_2.fish"
 echo testtesttest2 >"$testFile2"
 

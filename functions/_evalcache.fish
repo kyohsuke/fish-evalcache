@@ -7,20 +7,14 @@ function _evalcache
         set -gx FISH_EVALCACHE_DIR "$HOME/.fish-evalcache"
     end
 
-    set -f cmdHash noHash
+    set -f cmdHash (_evalcache_cmdhash $argv)
 
-    if command -v md5 >/dev/null
-        set -f cmdHash (echo -n "$argv" | md5)
-    else if command -v md5sum >/dev/null
-        set -f cmdHash (echo -n "$argv" | md5sum | cut -d' ' -f1)
-    end
-
-    set -f cmd (basename $argv[1])
+    set -f cmd (path basename $argv[1])
     set -f cacheFile "$FISH_EVALCACHE_DIR/init-$cmd-$cmdHash.fish"
 
     if test "$FISH_EVALCACHE_DISABLE" = true
-        eval ($argv | source)
-    else if test -s "$cacheFile"
+        $argv | source
+    else if test -f "$cacheFile"
         source "$cacheFile"
     else
         if type "$argv[1]" >/dev/null
@@ -28,7 +22,7 @@ function _evalcache
             mkdir -p "$FISH_EVALCACHE_DIR"
 
             for fName in "$FISH_EVALCACHE_DIR/init-$cmd-"*".fish"
-                set -l baseName (basename $fName)
+                set -l baseName (path basename $fName)
                 echo "[INFO] Different arguments cache found, deleting: $baseName"
                 rm -f "$fName"
             end
